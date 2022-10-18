@@ -1,5 +1,8 @@
 package no.hvl.dat100ptc.oppgave5;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import javax.swing.JOptionPane;
 
 import easygraphics.EasyGraphics;
@@ -56,9 +59,11 @@ public class ShowRoute extends EasyGraphics {
 		double ystep;
 		
 		// TODO - START
+		double maxlat = GPSUtils.findMax(GPSUtils.getLatitudes(gpspoints));
+		double minlat = GPSUtils.findMin(GPSUtils.getLatitudes(gpspoints));
 		
-		throw new UnsupportedOperationException(TODO.method());
-
+		ystep = MAPYSIZE / (Math.abs(maxlat-minlat));
+		return ystep;
 		// TODO - SLUTT
 		
 	}
@@ -66,23 +71,29 @@ public class ShowRoute extends EasyGraphics {
 	public void showRouteMap(int ybase) {
 
 		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
+		int lon;
+		int lat;
+		setColor(255,0,0);
+		for(int i = 0; i < gpspoints.length; i++) {
+			lon = (int) gpspoints[i].getLongitude();
+			lat = (int) gpspoints[i].getLatitude();
+			drawLine(MARGIN+lon, ybase-lat, MARGIN+lon, ybase-lat);
+		}
 		// TODO - SLUTT
 	}
 
 	public void showStatistics() {
-
 		int TEXTDISTANCE = 20;
-
 		setColor(0,0,0);
 		setFont("Courier",12);
-		
 		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
+		NumberFormat formatter = new DecimalFormat("#0.00");
+		drawString("Total Time       : " + GPSUtils.formatTime(gpscomputer.totalTime()), MARGIN, TEXTDISTANCE);
+		drawString("Total distance : " + GPSUtils.formatDouble(gpscomputer.totalDistance()/1000) + " km", MARGIN, TEXTDISTANCE*2);
+		drawString("Total elevation:     " + formatter.format(gpscomputer.totalElevation()) + " m", MARGIN, TEXTDISTANCE*3);
+		drawString("Max speed       : " + GPSUtils.formatDouble(gpscomputer.maxSpeed()) + " km/t", MARGIN, TEXTDISTANCE*4);
+		drawString("Average speed: " + GPSUtils.formatDouble(gpscomputer.averageSpeed()) + " km/t", MARGIN, TEXTDISTANCE*5);
+		drawString("Energy              :       " + formatter.format(gpscomputer.totalKcal(80)) + " kcal", MARGIN, TEXTDISTANCE*6);
 		// TODO - SLUTT;
 	}
 
