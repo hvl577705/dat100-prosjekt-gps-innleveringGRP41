@@ -112,20 +112,23 @@ public class GPSComputer {
 		double met = 0;		
 		double speedmph = speed * MS;
 		// TODO - START
-		if(speedmph < 10) {
+		//konverterer til flyttall
+		double d = secs;
+		speedmph = Math.abs(speedmph);
+		if(speedmph <= 10) {
 			met = 4;
-		} else if (speedmph >= 10 && speedmph <= 12) {
+		} else if (speedmph <= 12) {
 			met = 6;
-		} else if(12 < speedmph && speedmph <= 14) {
+		} else if(speedmph <= 14) {
 			met = 8;
-		} else if(14 < speedmph && speedmph <= 16) {
+		} else if(speedmph <= 16) {
 			met = 10;
-		} else if(16 < speedmph && speedmph <= 19) {
+		} else if(speedmph <= 19) {
 			met = 12;
 		} else {
 			met = 16;
 		}
-		kcal = met * weight * (secs/3600);
+		kcal = met * weight * (d/3600);
 		return kcal;
 		// TODO - SLUTT
 	}
@@ -156,7 +159,7 @@ public class GPSComputer {
 		System.out.println("Total elevation:     " + formatter.format(totalElevation()) + " m");
 		System.out.println("Max speed      : " + GPSUtils.formatDouble(maxSpeed()) + " km/t");
 		System.out.println("Average speed  : " + GPSUtils.formatDouble(averageSpeed()) + " km/t");
-		System.out.println("Energy         :       " + formatter.format(totalKcal(WEIGHT)) + " kcal");
+		System.out.println("Energy         :    " + formatter.format(totalKcal(WEIGHT)) + " kcal");
 		// TODO - SLUTT
 		
 	}

@@ -68,16 +68,45 @@ public class ShowRoute extends EasyGraphics {
 		
 	}
 
+	/**
+	 * @param ybase
+	 */
+	/**
+	 * @param ybase
+	 */
 	public void showRouteMap(int ybase) {
-
 		// TODO - START
-		int lon;
-		int lat;
-		setColor(255,0,0);
-		for(int i = 0; i < gpspoints.length; i++) {
-			lon = (int) gpspoints[i].getLongitude();
-			lat = (int) gpspoints[i].getLatitude();
-			drawLine(MARGIN+lon, ybase-lat, MARGIN+lon, ybase-lat);
+		double lon;
+		double lat;
+
+//		for(int i = 0; i < gpspoints.length; i++) {
+//			
+//		}
+		double lon2, lat2;
+		int latit, longi, latit2, longi2;
+		
+		for(int i = 1; i < gpspoints.length; i++) {
+			lon = gpspoints[i-1].getLongitude();
+			lat = gpspoints[i-1].getLatitude();
+			lon = (lon * 1000 - 5000) *2;
+			lat = (lat * 1000 - 60000) *2;
+			
+			lon2 = gpspoints[i].getLongitude();
+			lat2 = gpspoints[i].getLatitude();
+			lon2 = (lon2 * 1000 - 5000) *2;
+			lat2 = (lat2 * 1000 - 60000) *2;
+			
+			longi = (int) Math.round(lon);
+			latit = (int) Math.round(lat);
+
+			longi2 = (int) Math.round(lon2);
+			latit2 = (int) Math.round(lat2);
+			
+
+			setColor(0,255,0);
+			drawLine(longi, ybase-latit, longi2, ybase-latit2);
+			setColor(255,0,0);
+			drawLine(longi, ybase-latit, longi, ybase-latit);
 		}
 		// TODO - SLUTT
 	}
@@ -87,13 +116,29 @@ public class ShowRoute extends EasyGraphics {
 		setColor(0,0,0);
 		setFont("Courier",12);
 		// TODO - START
-		NumberFormat formatter = new DecimalFormat("#0.00");
-		drawString("Total Time       : " + GPSUtils.formatTime(gpscomputer.totalTime()), MARGIN, TEXTDISTANCE);
-		drawString("Total distance : " + GPSUtils.formatDouble(gpscomputer.totalDistance()/1000) + " km", MARGIN, TEXTDISTANCE*2);
-		drawString("Total elevation:     " + formatter.format(gpscomputer.totalElevation()) + " m", MARGIN, TEXTDISTANCE*3);
-		drawString("Max speed       : " + GPSUtils.formatDouble(gpscomputer.maxSpeed()) + " km/t", MARGIN, TEXTDISTANCE*4);
-		drawString("Average speed: " + GPSUtils.formatDouble(gpscomputer.averageSpeed()) + " km/t", MARGIN, TEXTDISTANCE*5);
-		drawString("Energy              :       " + formatter.format(gpscomputer.totalKcal(80)) + " kcal", MARGIN, TEXTDISTANCE*6);
+		String[] navnTab = new String[6];
+		navnTab[0] = "Total time ";
+		navnTab[1] = "Total distance ";
+		navnTab[2] = "Total elevation ";
+		navnTab[3] = "Max speed ";
+		navnTab[4] = "Average speed ";
+		navnTab[5] = "Energy ";
+		
+		String[] statTab = new String[6];
+		statTab[0] = " " + GPSUtils.formatTime(gpscomputer.totalTime()) + " ";
+		statTab[1] = " " + GPSUtils.formatDouble(gpscomputer.totalDistance()/1000) + " km ";
+		statTab[2] = "" + GPSUtils.formatDouble(gpscomputer.totalElevation()) + "0" + " m ";
+		statTab[3] = " " + GPSUtils.formatDouble(gpscomputer.maxSpeed()) + " km/t ";
+		statTab[4] = " " + GPSUtils.formatDouble(gpscomputer.averageSpeed()) + " km/t ";
+		statTab[5] = "" + GPSUtils.formatDouble(gpscomputer.totalKcal(80)) + "0" + " kcal ";
+		
+		String kolon = ":";
+		
+		for(int i = 0; i<navnTab.length; i++) {
+			drawString(navnTab[i], MARGIN, TEXTDISTANCE+20*i);
+			drawString(kolon, MARGIN + 110, TEXTDISTANCE+20*i);
+			drawString(statTab[i], MARGIN + 120, TEXTDISTANCE+20*i);
+		}
 		// TODO - SLUTT;
 	}
 
